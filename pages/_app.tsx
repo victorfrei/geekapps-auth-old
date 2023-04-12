@@ -29,7 +29,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <ClerkProvider
       {...pageProps}
       localization={ptBR}
-      frontendApi={process.env.FRONTEND_API_KEY}
       appearance={{
         baseTheme: dark,
         layout: {
