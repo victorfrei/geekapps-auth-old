@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Org_authorization {
+  Owner
+  Admin
+  Member
+}
+
+enum Org_authorization_level {
+  All
+  Finance
+  Manager
+}
+
+model User {
+  id                      String                   @id @default(uuid()) @db.Uuid
+  supabase_id             String?
+  stripe_customer_id      String
+  stripe_subscription_id  String
+  name                    String
+  email                   String
+  picture                 String?                  @default("/logo.png")
+  status                  Boolean                  @default(false)
+  org_authorization       Org_authorization?
+  org_authorization_level Org_authorization_level?
+  Organizations           Organizations[]
+  Room                    Room?                    @relation(fields: [roomId], references: [id])
+  roomId                  String?                  @db.Uuid
+  RoomHall                RoomHall?
+}
+
+model Organizations {
+  id               String   @id @default(uuid()) @db.Uuid
+  type             Team
+  name             String
+  picture          String   @default("/images/org/sand.jpg")
+  concurrent_rooms Int      @default(1)
+  concurrent_users Int      @default(4)
+  max_time         Int      @default(1800) // 0.5 hora
+  users            User[]
+  createdAt        DateTime @default(now())
+  Room             Room[]
+}
+
+enum Team {
+  Personal_Free_Plan
+  Team_Basic_Plan
+  Team_Premium_Plan
+  Enterprise_Bussiness_Plan
+}
+
+model Room {
+  id              String        @id @default(uuid()) @db.Uuid
+  mux_space_id    String
+  organization    Organizations @relation(fields: [organizationsId], references: [id])
+  name            String
+  allowed_users   String[] //string de ids de usuários permitidos
+  users           User[] // usuários na sala
+  hall_users      RoomHall[] //usuários que querem entrar na sala
+  is_active       Boolean
+  is_recording    Boolean
+  createdAt       DateTime      @default(now())
+  organizationsId String        @db.Uuid
+}
+
+model RoomHall {
+  id               String   @id @default(uuid()) @db.Uuid
+  user             User?    @relation(fields: [userId], references: [id])
+  is_user_from_org Boolean
+  createdAt        DateTime @default(now())
+  Room             Room?    @relation(fields: [roomId], references: [id])
+  roomId           String   @db.Uuid
+  userId           String   @unique @db.Uuid
+}
