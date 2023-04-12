@@ -1,4 +1,4 @@
-import { CreateOrganization } from "@clerk/clerk-react";
+import { CreateOrganization } from "@clerk/nextjs";
 
 const CreateOrganizationPage = () => {
   return (
