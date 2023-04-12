@@ -10,6 +10,22 @@
   @apply bg-zinc-800;
 }
 
+.cl-organizationSwitcherTrigger{
+  @apply h-10 p-2 mx-2 focus:border-none hover:bg-zinc-600 focus:bg-zinc-600 focus:ring-0
+}
+
+.cl-userButtonTrigger{
+  @apply focus:ring-0 p-1 hover:bg-zinc-600 focus:bg-zinc-600 focus:border-none
+}
+
+.cl-userButtonAvatarBox{
+  @apply w-10 h-10
+}
+
+.cl-organizationSwitcherPopoverActionButton{
+  display: none;
+}
+
 .cl-footer {
   display: flex;
   flex-direction: column;

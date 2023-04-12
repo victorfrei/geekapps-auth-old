@@ -4,7 +4,7 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="pt-br">
+      <Html lang="pt-br" className="overflow-x-hidden">
         <Head />
         <body>
           <Main />
